@@ -13,7 +13,6 @@
     "Salvatore Formisano <formisano.salvatore@gmail.com>"
   ],
   "license": "MIT",
-  "private": true,
   "ignore": [
     "**/.*",
     "node_modules",
