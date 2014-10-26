@@ -214,9 +214,9 @@ angular.module('angoolarse').service('parseService', function($q, ParseQueryServ
     return deferred.promise;
   }
 
-  function _getAllCount(parseClassData){
+  function _getAllCount(parseClassData, queryParams){
     var deferred = $q.defer(),
-        parseQuery = new ParseQueryService(parseClassData);
+        parseQuery = new ParseQueryService(parseClassData, queryParams);
 
     parseQuery.count({
       success: function(count) {
