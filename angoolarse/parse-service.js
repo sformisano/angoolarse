@@ -33,17 +33,22 @@ angular.module('angoolarse').service('parseService', function($q, ParseQueryServ
         parseArrayC = 0,
         jsonArray = [];
 
-    $.map(parseArray, function(parseObject, i){
-      _maybeModelToJSON(toJSON, parseClassData, parseObject).then(function(jsonObject){
-        jsonArray[i] = jsonObject;
+    if(parseArrayLength === 0){
+      deferred.resolve([]);
+    }
+    else{
+      $.map(parseArray, function(parseObject, i){
+        _maybeModelToJSON(toJSON, parseClassData, parseObject).then(function(jsonObject){
+          jsonArray[i] = jsonObject;
 
-        parseArrayC = parseArrayC + 1;
+          parseArrayC = parseArrayC + 1;
 
-        if( parseArrayC === parseArrayLength ){
-          deferred.resolve(jsonArray);
-        }
+          if( parseArrayC === parseArrayLength ){
+            deferred.resolve(jsonArray);
+          }
+        });
       });
-    });
+    }
 
     return deferred.promise;
   }
@@ -115,16 +120,22 @@ angular.module('angoolarse').service('parseService', function($q, ParseQueryServ
         jsonArrayC = 0,
         parseObjects = [];
 
-    $.map(jsonArray, function(jsonObject, i){
-      jsonArrayC = jsonArrayC + 1;
-      _maybeModelToParse(toParse, parseClassData, jsonObject).then(function(parseObject){
-        parseObjects[i] = parseObject;
 
-        if( jsonArrayC === jsonArrayLength ){
-          deferred.resolve(parseObjects);
-        }
+    if(jsonArrayLength === 0){
+      deferred.resolve([]);
+    }
+    else{
+      $.map(jsonArray, function(jsonObject, i){
+        jsonArrayC = jsonArrayC + 1;
+        _maybeModelToParse(toParse, parseClassData, jsonObject).then(function(parseObject){
+          parseObjects[i] = parseObject;
+
+          if( jsonArrayC === jsonArrayLength ){
+            deferred.resolve(parseObjects);
+          }
+        });
       });
-    });
+    }
 
     return deferred.promise;
   }
