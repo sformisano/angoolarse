@@ -396,8 +396,8 @@ angular.module('angoolarse').service('parseService', function($q, ParseQueryServ
       return _getAll(this.parseClassData, queryParams, options);
     },
 
-    getAllCount : function(){
-      return _getAllCount(this.parseClassData);
+    getAllCount : function(queryParams){
+      return _getAllCount(this.parseClassData, queryParams);
     },
 
     getBy : function(queryParams, options){
