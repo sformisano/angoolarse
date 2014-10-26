@@ -349,17 +349,22 @@ angular.module('angoolarse').service('parseService', function($q, ParseQueryServ
         parseObjectsC = 0,
         parseObjectsWithRelations = [];
 
-    $.map(parseObjects, function(parseObject, i){
-      _maybeIncludeModelRelations(parseClassData, parseObject)
-        .then(function(parseObjectWithRelations){
-          parseObjectsWithRelations[i] = parseObjectWithRelations;
-          parseObjectsC = parseObjectsC + 1;
+    if(parseObjectsN === 0){
+      deferred.resolve([]);
+    }
+    else{
+      $.map(parseObjects, function(parseObject, i){
+        _maybeIncludeModelRelations(parseClassData, parseObject)
+          .then(function(parseObjectWithRelations){
+            parseObjectsWithRelations[i] = parseObjectWithRelations;
+            parseObjectsC = parseObjectsC + 1;
 
-          if(parseObjectsC === parseObjectsN){
-            deferred.resolve(parseObjectsWithRelations);
-          }
-        });
-    });
+            if(parseObjectsC === parseObjectsN){
+              deferred.resolve(parseObjectsWithRelations);
+            }
+          });
+      });
+    }
 
     return deferred.promise;
   }
