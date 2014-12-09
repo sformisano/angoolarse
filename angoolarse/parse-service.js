@@ -57,7 +57,7 @@ angular.module('angoolarse').service('parseService', function($q, ParseQueryServ
     var deferred = $q.defer(),
         jsonModel;
 
-    if( toJSON ){
+    if(toJSON){
       jsonModel = parseObject.toJSON();
 
       if(parseClassData.parseClassRelations){
@@ -76,8 +76,21 @@ angular.module('angoolarse').service('parseService', function($q, ParseQueryServ
 
       if(parseClassData.parseClassPointers){
         angular.forEach(parseClassData.parseClassPointers, function(pointerParseClassData){
-          var pointedObject = parseObject.get(pointerParseClassData.parseColumnName);
-          jsonModel[pointerParseClassData.parseColumnName] = pointedObject.toJSON();
+          var pointedData = parseObject.get(pointerParseClassData.parseColumnName),
+              output;
+
+          if(angular.isArray(pointedData)){
+            output = [];
+
+            angular.forEach(pointedData, function(pointedObject){
+              output.push(pointedObject.toJSON());
+            });
+          }
+          else{
+            output = pointedData.toJSON();
+          }
+
+          jsonModel[pointerParseClassData.parseColumnName] = output;
         });
       }
 
